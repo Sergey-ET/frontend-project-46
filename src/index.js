@@ -1,25 +1,37 @@
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
+import parse from './parsers.js';
 
-const genDiff = (filepath1, filepath2) => {
-  const obj1 = JSON.parse(fs.readFileSync(path.resolve(filepath1)));
-  const obj2 = JSON.parse(fs.readFileSync(path.resolve(filepath2)));
-  const keys = Object.keys({ ...obj1, ...obj2 });
+const makeConfig = (pathToFile) => {
+  const type = path.extname(pathToFile);
+  const data = fs.readFileSync(path.resolve(pathToFile));
+
+  return { type, data };
+};
+
+const genDiff = (pathToFileBefore, pathToFileAfter) => {
+  const beforeConfig = makeConfig(pathToFileBefore);
+  const afterConfig = makeConfig(pathToFileAfter);
+
+  const parsedConfigBefore = parse(beforeConfig.type, beforeConfig.data);
+  const parsedConfigAfter = parse(afterConfig.type, afterConfig.data);
+
+  const keys = Object.keys({ ...parsedConfigBefore, ...parsedConfigAfter });
   const sortedKeys = _.sortBy(keys);
 
   const result = sortedKeys.map((key) => {
-    if (!_.has(obj2, key)) {
-      return ` - ${key}: ${obj1[key]}`;
+    if (!_.has(parsedConfigAfter, key)) {
+      return ` - ${key}: ${parsedConfigBefore[key]}`;
     }
-    if (!_.has(obj1, key)) {
-      return ` + ${key}: ${obj2[key]}`;
+    if (!_.has(parsedConfigBefore, key)) {
+      return ` + ${key}: ${parsedConfigAfter[key]}`;
     }
-    if (obj1[key] !== obj2[key]) {
-      return ` - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+    if (parsedConfigBefore[key] !== parsedConfigAfter[key]) {
+      return ` - ${key}: ${parsedConfigBefore[key]}\n  + ${key}: ${parsedConfigAfter[key]}`;
     }
 
-    return `   ${key}: ${obj1[key]}`;
+    return `   ${key}: ${parsedConfigBefore[key]}`;
   });
 
   return `{\n ${result.join('\n ')}\n}`;
