@@ -11,13 +11,15 @@ const genDiff = (filepath1, filepath2) => {
   const result = sortedKeys.map((key) => {
     if (!_.has(obj2, key)) {
       return ` - ${key}: ${obj1[key]}`;
-    } else if (!_.has(obj1, key)) {
-      return ` + ${key}: ${obj2[key]}`;
-    } else if (obj1[key] !== obj2[key]) {
-      return ` - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
-    } else {
-      return `   ${key}: ${obj1[key]}`;
     }
+    if (!_.has(obj1, key)) {
+      return ` + ${key}: ${obj2[key]}`;
+    }
+    if (obj1[key] !== obj2[key]) {
+      return ` - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+    }
+
+    return `   ${key}: ${obj1[key]}`;
   });
 
   return `{\n ${result.join('\n ')}\n}`;

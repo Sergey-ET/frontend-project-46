@@ -1,6 +1,6 @@
 # The Difference Generator
 
-[![Actions Status](https://github.com/Sergey-ET/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/Sergey-ET/frontend-project-46/actions)
+[![Actions Status](https://github.com/Sergey-ET/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/Sergey-ET/frontend-project-46/actions)[![Node CI](https://github.com/Sergey-ET/frontend-project-46/workflows/Node%20CI/badge.svg)](https://github.com/Sergey-ET/frontend-project-46/actions)[![Maintainability](https://api.codeclimate.com/v1/badges/5a5f6c02276268a5dc45/maintainability)](https://codeclimate.com/github/Sergey-ET/frontend-project-46/maintainability)[![Test Coverage](https://api.codeclimate.com/v1/badges/5a5f6c02276268a5dc45/test_coverage)](https://codeclimate.com/github/Sergey-ET/frontend-project-46/test_coverage)
 
 ## Description
 
