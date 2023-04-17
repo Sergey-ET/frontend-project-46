@@ -29,3 +29,7 @@ make gendiff [options] <filepath1> <filepath2> # Running the generator
 ### Flat File Comparison (JSON)
 
 [![asciicast](https://asciinema.org/a/9uIlnc1HWrAvcpjv8m56e39GQ.svg)](https://asciinema.org/a/9uIlnc1HWrAvcpjv8m56e39GQ)
+
+### Flat File Comparison (YAML)
+
+[![asciicast](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH.svg)](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH)
