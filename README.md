@@ -33,3 +33,7 @@ make gendiff [options] <filepath1> <filepath2> # Running the generator
 ### Flat File Comparison (YAML)
 
 [![asciicast](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH.svg)](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH)
+
+### Comparison of files with the nested structures
+
+[![asciicast](https://asciinema.org/a/HBVeODWz1Myz7pK3ReW035b7Y.svg)](https://asciinema.org/a/HBVeODWz1Myz7pK3ReW035b7Y)
