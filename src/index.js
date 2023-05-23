@@ -13,20 +13,27 @@ const makeConfig = (pathToFile) => {
 
 const diff = (dataBefore, dataAfter) => {
   const keys = _.sortBy(_.union(_.keys(dataBefore), _.keys(dataAfter)));
+
+  const handleDiff = (acc, key, value) => {
+    if (_.isObject(dataBefore[key]) && _.isObject(dataAfter[key])) {
+      acc[key] = diff(dataBefore[key], dataAfter[key]);
+    } else if (dataBefore[key] !== dataAfter[key]) {
+      acc[`- ${key}`] = dataBefore[key];
+      acc[`+ ${key}`] = dataAfter[key];
+    } else {
+      acc[key] = value;
+    }
+  };
+
   return keys.reduce((acc, key) => {
     if (!_.has(dataAfter, key)) {
-      return { ...acc, [`- ${key}`]: dataBefore[key] };
+      acc[`- ${key}`] = dataBefore[key];
+    } else if (!_.has(dataBefore, key)) {
+      acc[`+ ${key}`] = dataAfter[key];
+    } else {
+      handleDiff(acc, key, dataBefore[key]);
     }
-    if (!_.has(dataBefore, key)) {
-      return { ...acc, [`+ ${key}`]: dataAfter[key] };
-    }
-    if (_.isObject(dataBefore[key]) && _.isObject(dataAfter[key])) {
-      return { ...acc, [key]: diff(dataBefore[key], dataAfter[key]) };
-    }
-    if (dataBefore[key] !== dataAfter[key]) {
-      return { ...acc, [`- ${key}`]: dataBefore[key], [`+ ${key}`]: dataAfter[key] };
-    }
-    return { ...acc, [key]: dataBefore[key] };
+    return acc;
   }, {});
 };
 
