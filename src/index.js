@@ -13,7 +13,7 @@ const makeConfig = (pathToFile) => {
 
 const diff = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
-  return keys.sort().map((key) => {
+  return _.sortBy(keys).map((key) => {
     if (!_.has(obj2, key)) {
       return { key, type: 'deleted', value: obj1[key] };
     }
