@@ -142,3 +142,7 @@ test('plain handles numbers correctly', () => {
 
   expect(result).toBe(expected);
 });
+
+test('generate difference between files in json format', () => {
+  expect(genDiff(getFixturePath('before.json'), getFixturePath('after.json'), 'json')).toEqual(readFile('expected_file_json.diff'));
+});

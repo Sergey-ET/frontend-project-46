@@ -26,11 +26,11 @@ make gendiff [options] <filepath1> <filepath2> # Running the generator
 
 ## Utility examples
 
-### Flat File Comparison (JSON)
+### Flat file comparison (JSON)
 
 [![asciicast](https://asciinema.org/a/9uIlnc1HWrAvcpjv8m56e39GQ.svg)](https://asciinema.org/a/9uIlnc1HWrAvcpjv8m56e39GQ)
 
-### Flat File Comparison (YAML)
+### Flat file comparison (YAML)
 
 [![asciicast](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH.svg)](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH)
 
@@ -41,3 +41,7 @@ make gendiff [options] <filepath1> <filepath2> # Running the generator
 ### Comparison of files with the nested structures in the 'plain' format
 
 [![asciicast](https://asciinema.org/a/41L2e3jajEV28tRUQvSMSCx1J.svg)](https://asciinema.org/a/41L2e3jajEV28tRUQvSMSCx1J)
+
+### Comparison of files with the nested structures in the 'json' format
+
+[![asciicast](https://asciinema.org/a/mR3G7sU3RGHgid1plzDLMQmYw.svg)](https://asciinema.org/a/mR3G7sU3RGHgid1plzDLMQmYw)
