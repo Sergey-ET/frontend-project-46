@@ -34,6 +34,10 @@ make gendiff [options] <filepath1> <filepath2> # Running the generator
 
 [![asciicast](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH.svg)](https://asciinema.org/a/T0p78fSkoFgwzVgB5lHlFFhtH)
 
-### Comparison of files with the nested structures
+### Comparison of files with the nested structures in the 'stylish' format
 
 [![asciicast](https://asciinema.org/a/HBVeODWz1Myz7pK3ReW035b7Y.svg)](https://asciinema.org/a/HBVeODWz1Myz7pK3ReW035b7Y)
+
+### Comparison of files with the nested structures in the 'plain' format
+
+[![asciicast](https://asciinema.org/a/41L2e3jajEV28tRUQvSMSCx1J.svg)](https://asciinema.org/a/41L2e3jajEV28tRUQvSMSCx1J)

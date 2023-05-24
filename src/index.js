@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import parse from './parsers.js';
-import stylish from './formatters/stylish.js';
+import formatter from './formatters/index.js';
 
 const makeConfig = (pathToFile) => {
   const type = path.extname(pathToFile);
@@ -11,30 +11,25 @@ const makeConfig = (pathToFile) => {
   return { type, data };
 };
 
-const diff = (dataBefore, dataAfter) => {
-  const keys = _.sortBy(_.union(_.keys(dataBefore), _.keys(dataAfter)));
-
-  const handleDiff = (acc, key, value) => {
-    if (_.isObject(dataBefore[key]) && _.isObject(dataAfter[key])) {
-      acc[key] = diff(dataBefore[key], dataAfter[key]);
-    } else if (dataBefore[key] !== dataAfter[key]) {
-      acc[`- ${key}`] = dataBefore[key];
-      acc[`+ ${key}`] = dataAfter[key];
-    } else {
-      acc[key] = value;
+const diff = (obj1, obj2) => {
+  const keys = _.union(_.keys(obj1), _.keys(obj2));
+  return keys.sort().map((key) => {
+    if (!_.has(obj2, key)) {
+      return { key, type: 'deleted', value: obj1[key] };
     }
-  };
-
-  return keys.reduce((acc, key) => {
-    if (!_.has(dataAfter, key)) {
-      acc[`- ${key}`] = dataBefore[key];
-    } else if (!_.has(dataBefore, key)) {
-      acc[`+ ${key}`] = dataAfter[key];
-    } else {
-      handleDiff(acc, key, dataBefore[key]);
+    if (!_.has(obj1, key)) {
+      return { key, type: 'added', value: obj2[key] };
     }
-    return acc;
-  }, {});
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+      return { key, type: 'nested', children: diff(obj1[key], obj2[key]) };
+    }
+    if (!_.isEqual(obj1[key], obj2[key])) {
+      return {
+        key, type: 'updated', valueBefore: obj1[key], valueAfter: obj2[key],
+      };
+    }
+    return { key, type: 'unchanged', value: obj1[key] };
+  });
 };
 
 const genDiff = (pathToFileBefore, pathToFileAfter, format = 'stylish') => {
@@ -46,14 +41,7 @@ const genDiff = (pathToFileBefore, pathToFileAfter, format = 'stylish') => {
 
   const differences = diff(parsedConfigBefore, parsedConfigAfter);
 
-  let formatter;
-  switch (format) {
-    default:
-      formatter = stylish;
-      break;
-  }
-
-  return formatter(differences);
+  return formatter(differences, format);
 };
 
 export default genDiff;

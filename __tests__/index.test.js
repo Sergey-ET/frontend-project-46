@@ -3,6 +3,7 @@ import { test, expect } from '@jest/globals';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import genDiff from '../src/index.js';
+import plain from '../src/formatters/plain.js';
 import stylish from '../src/formatters/stylish.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,7 +27,118 @@ test('generate difference between files as default', () => {
   expect(genDiff(getFixturePath('.before'), getFixturePath('.after'))).toEqual(readFile('expected_file.diff'));
 });
 
-test('stringify non-object data', () => {
-  const data = 'some string';
-  expect(stylish(data)).toBe(data);
+test('generate difference between files in plain format', () => {
+  expect(genDiff(getFixturePath('before.json'), getFixturePath('after.json'), 'plain')).toEqual(readFile('expected_file_plain.diff'));
+});
+
+test('stylish should return empty string for unexpected diff type', () => {
+  const diffs = [
+    {
+      type: 'unexpectedType',
+      key: 'test',
+      value: 'value',
+    },
+  ];
+
+  const result = stylish(diffs);
+  const expected = '{\n\n}';
+
+  expect(result).toBe(expected);
+});
+
+test('stylish handles "deleted" diff type', () => {
+  const diffs = [
+    {
+      type: 'deleted',
+      key: 'test',
+      value: 'value',
+    },
+  ];
+
+  const result = stylish(diffs);
+  const expected = '{\n  - test: value\n}';
+
+  expect(result).toBe(expected);
+});
+
+test('stylish handles "added" diff type', () => {
+  const diffs = [
+    {
+      type: 'added',
+      key: 'test',
+      value: 'value',
+    },
+  ];
+
+  const result = stylish(diffs);
+  const expected = '{\n  + test: value\n}';
+
+  expect(result).toBe(expected);
+});
+
+test('stylish handles "updated" diff type', () => {
+  const diffs = [
+    {
+      type: 'updated',
+      key: 'test',
+      valueBefore: 'oldValue',
+      valueAfter: 'newValue',
+    },
+  ];
+
+  const result = stylish(diffs);
+  const expected = '{\n  - test: oldValue\n  + test: newValue\n}';
+
+  expect(result).toBe(expected);
+});
+
+test('stylish handles "nested" diff type', () => {
+  const diffs = [
+    {
+      type: 'nested',
+      key: 'test',
+      children: [
+        {
+          type: 'added',
+          key: 'nestedKey',
+          value: 'nestedValue',
+        },
+      ],
+    },
+  ];
+
+  const result = stylish(diffs);
+  const expected = '{\n    test: {\n      + nestedKey: nestedValue\n    }\n}';
+
+  expect(result).toBe(expected);
+});
+
+test('stylish handles "unchanged" diff type', () => {
+  const diffs = [
+    {
+      type: 'unchanged',
+      key: 'test',
+      value: 'value',
+    },
+  ];
+
+  const result = stylish(diffs);
+  const expected = '{\n    test: value\n}';
+
+  expect(result).toBe(expected);
+});
+
+test('plain handles numbers correctly', () => {
+  const diffs = [
+    {
+      type: 'added',
+      key: 'test',
+      value: 123,
+    },
+  ];
+
+  const result = plain(diffs);
+  const expected = "Property 'test' was added with value: 123";
+
+  expect(result).toBe(expected);
 });
