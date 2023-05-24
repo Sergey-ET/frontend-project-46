@@ -11,7 +11,7 @@ const printValue = (value, depth) => {
   return `{\n${lines.join('\n')}\n${indent.slice(0, -2)}}`;
 };
 
-const generateLine = (indent, symbol, key, value, depth) => `${indent.slice(0, -2)}${symbol} ${key}:${value === '' ? '' : ' '}${printValue(value, depth + 1)}`;
+const generateLine = (indent, symbol, key, value, depth) => `${indent.slice(0, -2)}${symbol} ${key}: ${printValue(value, depth + 1)}`;
 
 const stylish = (diffs, depth = 1) => {
   const indent = ' '.repeat(depth * 4 - 2);
